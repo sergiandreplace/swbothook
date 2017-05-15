@@ -11,7 +11,7 @@ public class SubjectAction {
         String characterName = request.result.parameters.get("Subject");
         return  "{\n" +
                 "  \"speech\": \"What do you want to know about "+ characterName +"?\",\n" +
-                "  \"displayText\": \"I don't know yet\",\n" +
+                "  \"displayText\": \"What do you want to know about "+ characterName +"?\",\n" +
                 "  \"source\": \"SWBot\"\n" +
                 "}";
     }
