@@ -13,7 +13,11 @@ public class SubjectAction {
                 "  \"speech\": \"What do you want to know about " + characterName + "?\",\n" +
                 "  \"displayText\": \"What do you want to know about " + characterName + "?\",\n" +
                 "  \"source\": \"SWBot\",\n" +
-                "  \"data\": {\"telegram\": \"What do you want to know about " + characterName + "?\"}\n" +
+                "  \"data\": {\n" +
+                "    \"telegram\": {\n" +
+                "      \"message\":\"What do you want to know about " + characterName + "?\"\n" +
+                "    }\n" +
+                "  }\n" +
                 "}";
     }
 }
