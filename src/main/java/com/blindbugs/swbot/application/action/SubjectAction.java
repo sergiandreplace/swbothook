@@ -23,7 +23,7 @@ public class SubjectAction {
                 "  \"data\": {\n" +
                 "    \"telegram\": {\n" +
                 "      \"chat_id\":\"" + conversationId + "\",\n" +
-                "      \"message\":\"What do you want to know about " + characterName + "?\"\n" +
+                "      \"text\":\"What do you want to know about " + characterName + "?\"\n" +
                 "    }\n" +
                 "  }\n" +
                 "}";
