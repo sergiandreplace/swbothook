@@ -14,6 +14,7 @@ public class SubjectAction {
     public String getCharacter(String request) {
         Configuration configuration = Configuration.defaultConfiguration();
         configuration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL);
+        String properCharacter = null;
 
         String characterName = JsonPath.read(request, "$.result.parameters.Subject");
         logger.info("Character name=" + characterName);
@@ -25,18 +26,19 @@ public class SubjectAction {
         if (characterName == null) {
             response = "Tell me the name of a character";
         } else {
-            String properCharacter = findCharacter(characterName);
+            properCharacter = findCharacter(characterName);
             if (properCharacter != null) {
                 response = "What do you want to know about " + properCharacter + "?";
             } else {
                 response = "I don't know who " + characterName + " is";
             }
         }
-
+        String contextOut = properCharacter != null ? "  \"contextOut\":[{\"Subject\":\"" + properCharacter + "\"}],\n" : "";
         return "{\n" +
                 "  \"speech\": \"" + response + "\",\n" +
                 "  \"displayText\": \"" + response + "\",\n" +
                 "  \"source\": \"SWBot\",\n" +
+                contextOut +
                 "  \"data\": {\n" +
                 "    \"telegram\": {\n" +
                 "      \"chat_id\":\"" + conversationId + "\",\n" +
