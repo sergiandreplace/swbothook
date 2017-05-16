@@ -33,6 +33,8 @@ public class SubjectAction {
             if (properCharacter != null) {
                 if ("ask.subject.height".equalsIgnoreCase(action)) {
                     response = getHeightResponse(properCharacter);
+                } else if ("ask.subject.hair".equalsIgnoreCase(action)) {
+                    response = getHairColorResponse(properCharacter);
                 } else {
                     response = "What do you want to know about " + properCharacter + "?";
                 }
@@ -54,6 +56,28 @@ public class SubjectAction {
                 "  }\n" +
                 "}";
     }
+
+    private String getHairColorResponse(String properCharacter) {
+        String hairColor;
+        switch (properCharacter) {
+            case "Luke Skywalker":
+                hairColor = " is blonde";
+                break;
+            case "Leia Organa":
+                hairColor = " has two dark cupcakes in her head";
+                break;
+            case "Darth Vader":
+                hairColor = " was blonde, now is bald as a fish";
+                break;
+            case "Han Solo":
+                hairColor = " has a nice brown hair";
+                break;
+            default:
+                hairColor = " has probably no hair";
+                break;
+
+        }
+        return properCharacter + " is " + hairColor + " meters tall";    }
 
     private String getHeightResponse(String properCharacter) {
         String height;
