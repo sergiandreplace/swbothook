@@ -16,13 +16,13 @@ public class SubjectAction {
         configuration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL);
         String properCharacter = null;
 
-        String characterName = JsonPath.read(request, "$.result.parameters.Subject");
+        String characterName = JsonPath.using(configuration).parse(request).read("$.result.parameters.Subject");
         logger.info("Character name=" + characterName);
 
-        String conversationId = JsonPath.read(request, "$.result.contexts[0].parameters.telegram_chat_id");
+        String conversationId = JsonPath.using(configuration).parse(request).read( "$.result.contexts[0].parameters.telegram_chat_id");
         logger.info("conversationId=" + conversationId);
 
-        String action = JsonPath.read(request, "$.result.action");
+        String action = JsonPath.using(configuration).parse(request).read( "$.result.action");
 
         String response;
         if (characterName == null) {
