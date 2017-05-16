@@ -34,4 +34,15 @@ public class AIRequest implements Serializable {
     public String sessionId;
 
 
+    @Override
+    public String toString() {
+        return "AIRequest{" +
+                "id='" + id + '\'' +
+                ", timestamp=" + timestamp +
+                ", lang='" + lang + '\'' +
+                ", result=" + result +
+                ", status=" + status +
+                ", sessionId='" + sessionId + '\'' +
+                '}';
+    }
 }

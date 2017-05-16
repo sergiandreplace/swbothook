@@ -19,5 +19,12 @@ public class AIOutputContext implements Serializable {
     @SerializedName("lifespan")
     public Integer lifespan;
 
-
+    @Override
+    public String toString() {
+        return "AIOutputContext{" +
+                "name='" + name + '\'' +
+                ", parameters=" + parameters +
+                ", lifespan=" + lifespan +
+                '}';
+    }
 }

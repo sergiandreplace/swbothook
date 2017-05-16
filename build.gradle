@@ -11,7 +11,7 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 version = '0.0.1-SNAPSHOT'
@@ -28,9 +28,9 @@ ext {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.cloud:spring-cloud-starter-feign')
 	compile 'com.google.code.gson:gson:2.8.0'
 	runtime('org.springframework.boot:spring-boot-devtools')
+	compile 'javax.inject:javax.inject:1'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 

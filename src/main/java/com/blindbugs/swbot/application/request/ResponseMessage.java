@@ -13,5 +13,11 @@ public class ResponseMessage {
     @SerializedName("speech")
     public String speech;
 
-
+    @Override
+    public String toString() {
+        return "ResponseMessage{" +
+                "type=" + type +
+                ", speech='" + speech + '\'' +
+                '}';
+    }
 }

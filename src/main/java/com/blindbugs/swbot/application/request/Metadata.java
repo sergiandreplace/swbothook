@@ -26,4 +26,12 @@ public class Metadata implements Serializable {
     @SerializedName("webhookUsed")
     public String webhookUsed;
 
+    @Override
+    public String toString() {
+        return "Metadata{" +
+                "intentName='" + intentName + '\'' +
+                ", intentId='" + intentId + '\'' +
+                ", webhookUsed='" + webhookUsed + '\'' +
+                '}';
+    }
 }

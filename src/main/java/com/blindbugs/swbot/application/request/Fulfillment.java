@@ -31,4 +31,15 @@ public class Fulfillment implements Serializable {
     @SerializedName("contextOut")
     public List<AIOutputContext> contextOut;
 
+    @Override
+    public String toString() {
+        return "Fulfillment{" +
+                "speech='" + speech + '\'' +
+                ", messages=" + messages +
+                ", displayText='" + displayText + '\'' +
+                ", data=" + data +
+                ", source='" + source + '\'' +
+                ", contextOut=" + contextOut +
+                '}';
+    }
 }

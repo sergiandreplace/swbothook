@@ -3,7 +3,7 @@ spring:
     name: swbothook
 logging:
   level:
-    org.springframework.web: ERROR
-    com.blindbugs: DEBUG
+    com.blindbugs.swbot.application.controller.HookController: DEBUG
+    com.blindbugs.swbot.application.controller: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

@@ -25,5 +25,13 @@ public class Status implements Serializable {
     @SerializedName("errorID")
     public String errorID;
 
-
+    @Override
+    public String toString() {
+        return "Status{" +
+                "code=" + code +
+                ", errorType='" + errorType + '\'' +
+                ", errorDetails='" + errorDetails + '\'' +
+                ", errorID='" + errorID + '\'' +
+                '}';
+    }
 }

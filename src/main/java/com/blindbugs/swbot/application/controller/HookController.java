@@ -27,7 +27,7 @@ public class HookController {
 
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> get(@RequestBody AIRequest request) {
-
+        logger.info(request.toString());
         String response = subjectAction.getCharacter(request);
         return new ResponseEntity<String>(response, HttpStatus.OK);
     }

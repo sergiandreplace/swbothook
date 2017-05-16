@@ -52,4 +52,18 @@ public class Result implements Serializable {
     @SerializedName("actionIncomplete")
     public boolean actionIncomplete;
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "action='" + action + '\'' +
+                ", score=" + score +
+                ", source='" + source + '\'' +
+                ", parameters=" + parameters +
+                ", contexts=" + contexts +
+                ", metadata=" + metadata +
+                ", resolvedQuery='" + resolvedQuery + '\'' +
+                ", fulfillment=" + fulfillment +
+                ", actionIncomplete=" + actionIncomplete +
+                '}';
+    }
 }
