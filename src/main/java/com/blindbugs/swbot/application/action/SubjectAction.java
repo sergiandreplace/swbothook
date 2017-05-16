@@ -24,6 +24,7 @@ public class SubjectAction {
         logger.info("conversationId=" + conversationId);
 
         String action = JsonPath.using(configuration).parse(request).read( "$.result.action");
+        logger.info("action=" + action);
 
         String response;
         if (characterName == null) {
@@ -77,7 +78,8 @@ public class SubjectAction {
                 break;
 
         }
-        return properCharacter + " is " + hairColor + " meters tall";    }
+        return properCharacter + hairColor;
+    }
 
     private String getHeightResponse(String properCharacter) {
         String height;
