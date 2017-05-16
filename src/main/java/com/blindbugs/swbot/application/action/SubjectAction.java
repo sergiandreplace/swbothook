@@ -19,7 +19,8 @@ public class SubjectAction {
         String characterName = JsonPath.using(configuration).parse(request).read("$.result.parameters.Subject");
         logger.info("Character name=" + characterName);
 
-        String conversationId = JsonPath.using(configuration).parse(request).read( "$.result.contexts[0].parameters.telegram_chat_id");
+        int id = JsonPath.using(configuration).parse(request).read("$.originalRequest.data.message.chat.id");
+        String conversationId = String.valueOf(id);
         logger.info("conversationId=" + conversationId);
 
         String action = JsonPath.using(configuration).parse(request).read( "$.result.action");
