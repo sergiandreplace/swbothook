@@ -1,46 +1,61 @@
 package com.blindbugs.swbot.application.action;
 
+import com.blindbugs.swbot.domain.people.FindPeopleService;
+import com.blindbugs.swbot.domain.people.People;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
+import com.jayway.jsonpath.PathNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class SubjectAction {
     private static final Logger logger = LoggerFactory.getLogger("HookAction");
     private static final String[] CHARACTERS = {"Luke Skywalker", "Leia Organa", "Darth Vader", "Han Solo"};
+    private FindPeopleService findPeopleService;
+
+    public SubjectAction(FindPeopleService findPeopleService) {
+
+        this.findPeopleService = findPeopleService;
+    }
 
     public String getCharacter(String request) {
         Configuration configuration = Configuration.defaultConfiguration();
-        configuration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL);
+        configuration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL, Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST);
         String properCharacter = null;
 
         String characterName = JsonPath.using(configuration).parse(request).read("$.result.parameters.Subject");
         logger.info("Character name=" + characterName);
+        int id;
+        String conversationId;
+        try {
+            id = JsonPath.using(configuration).parse(request).read("$.originalRequest.data.message.chat.id");
+            conversationId = String.valueOf(id);
+            logger.info("conversationId=" + conversationId);
+        } catch (PathNotFoundException e) {
+            conversationId = null;
+        }
 
-        int id = JsonPath.using(configuration).parse(request).read("$.originalRequest.data.message.chat.id");
-        String conversationId = String.valueOf(id);
-        logger.info("conversationId=" + conversationId);
-
-        String action = JsonPath.using(configuration).parse(request).read( "$.result.action");
+        String action = JsonPath.using(configuration).parse(request).read("$.result.action");
         logger.info("action=" + action);
 
         String response;
         if (characterName == null) {
             response = "Tell me the name of a character";
         } else {
-            properCharacter = findCharacter(characterName);
-            if (properCharacter != null) {
-                if ("ask.subject.height".equalsIgnoreCase(action)) {
-                    response = getHeightResponse(properCharacter);
-                } else if ("ask.subject.hair".equalsIgnoreCase(action)) {
-                    response = getHairColorResponse(properCharacter);
-                } else if ("ask.subject.planet".equalsIgnoreCase(action)) {
-                    response = getPlanetResponse(properCharacter);
-                } else {
-                    response = "What do you want to know about " + properCharacter + "?";
-                }
+            List<People> peopleList = findPeopleService.execute(characterName);
+            if (peopleList.size() == 1) {
+                response = "What do you want to know about " + peopleList.get(0).getName() + "?";
+                properCharacter = peopleList.get(0).getName();
+            } else if (peopleList.size() > 1) {
+                response = "Do you mean " + peopleList.subList(0, peopleList.size() - 1).stream()
+                        .map(People::getName)
+                        .collect(Collectors.joining(", "))
+                        + " or " + peopleList.get(peopleList.size() - 1).getName();
             } else {
                 response = "I don't know who " + characterName + " is";
             }
