@@ -36,6 +36,8 @@ public class SubjectAction {
                     response = getHeightResponse(properCharacter);
                 } else if ("ask.subject.hair".equalsIgnoreCase(action)) {
                     response = getHairColorResponse(properCharacter);
+                } else if ("ask.subject.planet".equalsIgnoreCase(action)) {
+                    response = getPlanetResponse(properCharacter);
                 } else {
                     response = "What do you want to know about " + properCharacter + "?";
                 }
@@ -79,6 +81,29 @@ public class SubjectAction {
 
         }
         return properCharacter + hairColor;
+    }
+
+    private String getPlanetResponse(String properCharacter) {
+        String planet;
+        switch (properCharacter) {
+            case "Luke Skywalker":
+                planet = " was born in space";
+                break;
+            case "Leia Organa":
+                planet = " was born in a Spaceship";
+                break;
+            case "Darth Vader":
+                planet = " was born in Tatooine";
+                break;
+            case "Han Solo":
+                planet = " planet is a mistery";
+                break;
+            default:
+                planet = " was not born anywhere";
+                break;
+
+        }
+        return properCharacter + planet;
     }
 
     private String getHeightResponse(String properCharacter) {
