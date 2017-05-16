@@ -28,7 +28,7 @@ ext {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile 'com.google.code.gson:gson:2.8.0'
+	compile 'com.jayway.jsonpath:json-path:2.2.0'
 	runtime('org.springframework.boot:spring-boot-devtools')
 	compile 'javax.inject:javax.inject:1'
 	testCompile('org.springframework.boot:spring-boot-starter-test')

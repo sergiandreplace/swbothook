@@ -1,7 +1,6 @@
 package com.blindbugs.swbot.application.controller;
+
 import com.blindbugs.swbot.application.action.SubjectAction;
-import com.blindbugs.swbot.application.request.AIRequest;
-import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,8 +28,7 @@ public class HookController {
     @RequestMapping(method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<String> get(@RequestBody String request) {
         logger.info(request);
-        Gson gson = new Gson();
-        String response = subjectAction.getCharacter(gson.fromJson(request, AIRequest.class));
+        String response = subjectAction.getCharacter(request);
         return new ResponseEntity<String>(response, HttpStatus.OK);
     }
 }
