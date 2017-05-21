@@ -15,11 +15,12 @@ import java.util.stream.Collectors;
 
 public class SubjectAction {
     private static final Logger logger = LoggerFactory.getLogger("HookAction");
-    private static final String[] CHARACTERS = {"Luke Skywalker", "Leia Organa", "Darth Vader", "Han Solo"};
+    public static final String PATH_REQUEST_SUBJECT = "$.result.parameters.Subject";
+    public static final String PATH_REQUEST_CONVERSATION_ID = "$.originalRequest.data.message.chat.id";
+    public static final String PATH_ACTION = "$.result.action";
     private FindPeopleService findPeopleService;
 
     public SubjectAction(FindPeopleService findPeopleService) {
-
         this.findPeopleService = findPeopleService;
     }
 
@@ -28,19 +29,19 @@ public class SubjectAction {
         configuration.addOptions(Option.DEFAULT_PATH_LEAF_TO_NULL, Option.SUPPRESS_EXCEPTIONS, Option.AS_PATH_LIST);
         String properCharacter = null;
 
-        String characterName = JsonPath.using(configuration).parse(request).read("$.result.parameters.Subject");
+        String characterName = JsonPath.using(configuration).parse(request).read(PATH_REQUEST_SUBJECT);
         logger.info("Character name=" + characterName);
         int id;
         String conversationId;
         try {
-            id = JsonPath.using(configuration).parse(request).read("$.originalRequest.data.message.chat.id");
+            id = JsonPath.using(configuration).parse(request).read(PATH_REQUEST_CONVERSATION_ID);
             conversationId = String.valueOf(id);
             logger.info("conversationId=" + conversationId);
         } catch (PathNotFoundException e) {
             conversationId = null;
         }
 
-        String action = JsonPath.using(configuration).parse(request).read("$.result.action");
+        String action = JsonPath.using(configuration).parse(request).read(PATH_ACTION);
         logger.info("action=" + action);
 
         String response;
@@ -49,8 +50,8 @@ public class SubjectAction {
         } else {
             List<People> peopleList = findPeopleService.execute(characterName);
             if (peopleList.size() == 1) {
-                response = "What do you want to know about " + peopleList.get(0).getName() + "?";
                 properCharacter = peopleList.get(0).getName();
+                response = getResponse(peopleList.get(0), action);
             } else if (peopleList.size() > 1) {
                 response = "Do you mean " + peopleList.subList(0, peopleList.size() - 1).stream()
                         .map(People::getName)
@@ -60,7 +61,7 @@ public class SubjectAction {
                 response = "I don't know who " + characterName + " is";
             }
         }
-        String contextOut = properCharacter != null ? "  \"contextOut\":[{\"Subject\":\"" + properCharacter + "\"}],\n" : "";
+        String contextOut = properCharacter != null ? "  \"contextOut\":[{\"name\":\"out\",\"Subject\":\"" + properCharacter + "\"}],\n" : "";
         return "{\n" +
                 "  \"speech\": \"" + response + "\",\n" +
                 "  \"displayText\": \"" + response + "\",\n" +
@@ -75,84 +76,23 @@ public class SubjectAction {
                 "}";
     }
 
-    private String getHairColorResponse(String properCharacter) {
-        String hairColor;
-        switch (properCharacter) {
-            case "Luke Skywalker":
-                hairColor = " is blonde";
+    private String getResponse(People person, String action) {
+        String response="";
+        switch (action) {
+            case "subject.set":
+                response = "What do you want to know about " + person.getName() + "?";
                 break;
-            case "Leia Organa":
-                hairColor = " has two dark cupcakes in her head";
+            case "subject.get.height":
+                response = person.getName() + " is " + person.getHeight() + "cm tall ";
                 break;
-            case "Darth Vader":
-                hairColor = " was blonde, now is bald as a fish";
-                break;
-            case "Han Solo":
-                hairColor = " has a nice brown hair";
+            case "subject.get.hair":
+                response = person.getName() + "'s hair color is " + person.getHairColor();
                 break;
             default:
-                hairColor = " has probably no hair";
-                break;
-
+                response = "I don't know that about " + person.getName();
         }
-        return properCharacter + hairColor;
+        return response;
     }
 
-    private String getPlanetResponse(String properCharacter) {
-        String planet;
-        switch (properCharacter) {
-            case "Luke Skywalker":
-                planet = " was born in space";
-                break;
-            case "Leia Organa":
-                planet = " was born in a Spaceship";
-                break;
-            case "Darth Vader":
-                planet = " was born in Tatooine";
-                break;
-            case "Han Solo":
-                planet = " planet is a mistery";
-                break;
-            default:
-                planet = " was not born anywhere";
-                break;
 
-        }
-        return properCharacter + planet;
-    }
-
-    private String getHeightResponse(String properCharacter) {
-        String height;
-        switch (properCharacter) {
-            case "Luke Skywalker":
-                height = "1.70";
-                break;
-            case "Leia Organa":
-                height = "1.60";
-                break;
-            case "Darth Vader":
-                height = "2.10";
-                break;
-            case "Han Solo":
-                height = "1.85";
-                break;
-            default:
-                height = "0.5";
-                break;
-
-        }
-        return properCharacter + " is " + height + " meters tall";
-    }
-
-    private String findCharacter(String unknownCharacter) {
-        if (unknownCharacter == null) {
-            return null;
-        }
-        for (String character : CHARACTERS) {
-            if (character.equalsIgnoreCase(unknownCharacter.trim())) {
-                return character;
-            }
-        }
-        return null;
-    }
 }

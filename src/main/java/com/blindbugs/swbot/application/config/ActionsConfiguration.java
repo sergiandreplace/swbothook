@@ -13,4 +13,5 @@ public class ActionsConfiguration {
         return new SubjectAction(findPeopleService);
     }
 
+
 }
