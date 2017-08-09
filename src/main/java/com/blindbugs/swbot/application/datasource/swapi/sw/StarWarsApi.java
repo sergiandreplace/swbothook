@@ -1,7 +1,9 @@
 package com.blindbugs.swbot.application.datasource.swapi.sw;
 
 import com.blindbugs.swbot.application.datasource.swapi.models.ApiPeople;
+import com.blindbugs.swbot.application.datasource.swapi.models.ApiPlanet;
 import com.blindbugs.swbot.application.datasource.swapi.models.ApiSWModelList;
+import com.blindbugs.swbot.domain.planet.PlanetCollection;
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -56,10 +58,9 @@ public interface StarWarsApi {
 //
 //    @GET("/planets/")
 //    public void getAllPlanets(@Query("page") int page,
-//                              Callback<SWModelList<Planet>> callback);
+//                              Callback<SWModelList<PlanetCollection>> callback);
 //
-//    @GET("/planets/{id}/")
-//    public void getPlanet(@Path("id") int planetId,
-//                          Callback<Planet> callback);
+    @GET("/planets/{id}/")
+    ApiPlanet getPlanet(@Path("id") int planetId);
 //
 }
